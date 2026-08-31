@@ -6,7 +6,7 @@
 
 **Pharmacology board prep that adapts to what you keep forgetting.**
 
-*A NAPLEX study app for pharmacy students — one drug a day, quizzed until it sticks.*
+*A NAPLEX study app for pharmacy students. One drug a day, quizzed until it sticks.*
 
 ![Platform](https://img.shields.io/badge/platform-iOS%2017%2B-C9A46A?style=for-the-badge&labelColor=0a0a0a)
 ![Swift](https://img.shields.io/badge/SwiftUI-Swift%206-D9B87C?style=for-the-badge&labelColor=0a0a0a)
@@ -24,11 +24,13 @@
 
 ## The idea
 
-Pharmacy students do not fail boards because they never saw a drug. They fail because they saw it in September and the exam is in May.
+MemoRx gives you one drug a day.
 
-MemoRx is built around that gap. Instead of a flashcard pile you grind until it blurs, it holds one curated drug per day for everyone, quizzes you on it, and then keeps quietly re-surfacing the drugs you got shaky on — right before you would have lost them. The dataset is hand-built rather than scraped, because a wrong mechanism of action in a study app is worse than no study app.
+You open it, read the card, answer a short quiz, and you are done in about four minutes. That is the whole daily ask. It fits between classes or on the bus, so it survives a rotation week where an hour of studying would not.
 
-> Same drug, same day, for everyone. It makes the leaderboard fair and it makes the studying social.
+The part you do not do yourself is the schedule. Drugs you got shaky on come back on their own, days or weeks later, before you would have lost them. Over eight months that adds up to a couple hundred drugs you still know in May.
+
+Everyone gets the same drug on the same day, which is what keeps the leaderboard fair and the studying social. And the dataset is hand-built rather than scraped, because a wrong mechanism of action in a study app is worse than no study app.
 
 ---
 
@@ -36,9 +38,9 @@ MemoRx is built around that gap. Instead of a flashcard pile you grind until it 
 
 <div align="center">
 
-<img src="screenshots/01-daily-drug.png" width="32%" alt="Daily drug card — today's drug with a quick quiz" />
-<img src="screenshots/02-daily-study.png" width="32%" alt="Daily study view — streak tracking and weekly progress" />
-<img src="screenshots/03-adaptive-quiz.png" width="32%" alt="Adaptive quiz — answer feedback with mechanism explanation" />
+<img src="screenshots/01-daily-drug.png" width="32%" alt="Daily drug card: today's drug with a quick quiz" />
+<img src="screenshots/02-daily-study.png" width="32%" alt="Daily study view: streak tracking and weekly progress" />
+<img src="screenshots/03-adaptive-quiz.png" width="32%" alt="Adaptive quiz: answer feedback with mechanism explanation" />
 
 <sub>Daily drug · Streaks & daily study · Adaptive quizzing</sub>
 
@@ -50,9 +52,9 @@ MemoRx is built around that gap. Instead of a flashcard pile you grind until it 
 
 <table>
 <tr><td width="30%"><b>201 drugs</b></td><td>Hand-curated, not scraped. Each one carries 16 structured fields.</td></tr>
-<tr><td><b>21 collections</b></td><td>Therapeutic areas — pain &amp; fever, cardiovascular, endocrine, infectious disease, psych, and more.</td></tr>
+<tr><td><b>21 collections</b></td><td>Therapeutic areas: pain &amp; fever, cardiovascular, endocrine, infectious disease, psych, and more.</td></tr>
 <tr><td><b>104 sub-collections</b></td><td>The level where real distinctions live: non-opioid analgesics vs. opioids, not just "pain."</td></tr>
-<tr><td><b>16 fields per drug</b></td><td>Mechanism, indications, contraindications, interactions, side effects, warnings, monitoring, dosage, counseling points, and clinical pearls.</td></tr>
+<tr><td><b>16 fields per drug</b></td><td>Including mechanism, indications, contraindications, interactions, side effects, warnings, monitoring, dosage, counseling points, and clinical pearls.</td></tr>
 </table>
 
 ---
@@ -88,9 +90,9 @@ Drugs.com / MedlinePlus
     spaced resurfacing based on decay)
 ```
 
-The pipeline is deliberately not fully automated. Source material gets pulled from Drugs.com and MedlinePlus, normalized into the 16-field schema, then validated — cross-referencing between sources and flagging anything that conflicts before a human signs off. Automation handles the boring parts (formatting, deduplication, schema conformance); judgment calls stay manual. A wrong mechanism of action or a missing contraindication in a board prep app isn't a data quality issue, it's a liability.
+The pipeline is deliberately not fully automated. Source material gets pulled from Drugs.com and MedlinePlus, normalized into the 16-field schema, then validated, cross-referencing between sources and flagging anything that conflicts before a human signs off. Automation handles the boring parts (formatting, deduplication, schema conformance); judgment calls stay manual. A wrong mechanism of action or a missing contraindication in a board prep app isn't a data quality issue, it's a liability.
 
-Once a drug record lands in Supabase, the competency system picks it up. Each user carries their own mastery state per drug — how many times they've seen it, how they rated it, when it's due again. That feeds the adaptive layer, which decides what to quiz, at what altitude (single-drug recall vs. cross-class reasoning), and when to resurface something that's about to slip.
+Once a drug record lands in Supabase, the competency system picks it up. Each user carries their own mastery state per drug: how many times they've seen it, how they rated it, when it's due again. That feeds the adaptive layer, which decides what to quiz, at what altitude (single-drug recall vs. cross-class reasoning), and when to resurface something that's about to slip.
 
 ---
 
@@ -112,7 +114,7 @@ The engine treats a drug as something you have a decaying grip on, not a card yo
 
 ```mermaid
 flowchart TB
-    subgraph CLIENT["📱 iOS — SwiftUI"]
+    subgraph CLIENT["📱 iOS · SwiftUI"]
         UI["Views<br/><i>quiz · drug cards<br/>progress · leaderboard</i>"]
         ENG["Engines<br/><i>quiz generation<br/>spaced repetition<br/>exam prep planner</i>"]
         CACHE["Offline cache<br/><i>bundled JSON fallback<br/>local progress state</i>"]
@@ -145,23 +147,23 @@ flowchart TB
     style STORE fill:#1a1614,stroke:#C9A46A,color:#F5F0E6
 ```
 
-**Cloud-first, offline-tolerant.** The app asks Supabase for content on launch. If the network fails or returns empty, it falls back to the last cached copy, then to JSON bundled in the binary — so a student on a hospital floor with no signal still gets their quiz.
+**Cloud-first, offline-tolerant.** The app asks Supabase for content on launch. If the network fails or returns empty, it falls back to the last cached copy, then to JSON bundled in the binary, so a student on a hospital floor with no signal still gets their quiz.
 
 **Server-authoritative progress.** Streaks, XP, and milestones are computed server-side rather than trusted from the device. A client that lies about its streak does not get a streak.
 
-**Receipts are verified, not decoded.** Subscription state is validated server-side against Apple's signed payloads with full certificate-chain verification anchored to Apple's root CA — not by reading the claims and hoping.
+**Receipts are verified, not decoded.** Subscription state is validated server-side against Apple's signed payloads with full certificate-chain verification anchored to Apple's root CA, not by reading the claims and hoping.
 
 ---
 
 ## Design principles
 
 <table>
-<tr><td width="34%"><b>🩺 Correctness over volume</b></td><td>201 drugs a pharmacist would sign off on beats 2,000 scraped ones. Every field is reviewed; wrong pharmacology in a study app is actively harmful.</td></tr>
-<tr><td><b>🕯 One drug a day</b></td><td>The unit of study is a day, not a session. Small, finishable, repeatable — the schedule does the work so motivation does not have to.</td></tr>
-<tr><td><b>📵 Studying works offline</b></td><td>Content is cached and bundled. Signal is not a prerequisite for review.</td></tr>
-<tr><td><b>🏛 Restrained by default</b></td><td>Black and gold, serif headings, generous space. A study tool should feel calm and serious, not gamified into noise — the streak counter is the loudest thing on screen and that is deliberate.</td></tr>
-<tr><td><b>🔒 Health-adjacent privacy</b></td><td>No user identifiers in crash telemetry, anonymous sessions supported, account deletion is a first-class action rather than an email request.</td></tr>
-<tr><td><b>⚖️ Fair competition</b></td><td>Everyone gets the same drug on the same day. The leaderboard measures consistency, not who found the easiest deck.</td></tr>
+<tr><td width="34%"><b>Correctness over volume</b></td><td>201 drugs a pharmacist would sign off on beats 2,000 scraped ones. Every field is reviewed; wrong pharmacology in a study app is actively harmful.</td></tr>
+<tr><td><b>One drug a day</b></td><td>The unit of study is a day, not a session. Small, finishable, repeatable. The schedule does the work so motivation does not have to.</td></tr>
+<tr><td><b>Studying works offline</b></td><td>Content is cached and bundled. Signal is not a prerequisite for review.</td></tr>
+<tr><td><b>Restrained by default</b></td><td>Black and gold, serif headings, generous space. A study tool should feel calm and serious, not gamified into noise. The streak counter is the loudest thing on screen and that is deliberate.</td></tr>
+<tr><td><b>Health-adjacent privacy</b></td><td>No user identifiers in crash telemetry, anonymous sessions supported, account deletion is a first-class action rather than an email request.</td></tr>
+<tr><td><b>Fair competition</b></td><td>Everyone gets the same drug on the same day. The leaderboard measures consistency, not who found the easiest deck.</td></tr>
 </table>
 
 ---
@@ -170,31 +172,31 @@ flowchart TB
 
 Shipping since June 2026. Source lives in a private repository; this is the shape of the work.
 
-### ☁️ June 2026 — release and backend foundation
+### ☁️ June 2026: release and backend foundation
 
 **v1.0 reaches the App Store.** The month's real work is underneath it: the Supabase layer gets its foundation laid properly, with 73 migrations and the edge function sources archived as a known-good state rather than left to drift between the dashboard and the repo.
 
-The rest is early production reality — subscription sync bugs found and fixed, and a silent fallback removed from the drug fetch path so real backend errors surface instead of quietly resolving to nothing.
+The rest is early production reality: subscription sync bugs found and fixed, and a silent fallback removed from the drug fetch path so real backend errors surface instead of quietly resolving to nothing.
 
-### 🔐 July 2026 — trust and testing
+### 🔐 July 2026: trust and testing
 
 A month spent almost entirely on making the backend trustworthy rather than adding features.
 
-Receipt verification moved to genuine signed-payload validation. A full audit pass swept the Supabase layer end to end — edge functions redeployed, scheduled jobs gated, weekly leaderboard archival corrected — with tests added behind it.
+Receipt verification moved to genuine signed-payload validation. A full audit pass swept the Supabase layer end to end: edge functions redeployed, scheduled jobs gated, weekly leaderboard archival corrected, with tests added behind it.
 
 Nothing a user would notice, which is rather the point: the parts of the app that handle money and rankings are the parts that most need to be boring and correct.
 
-### 📚 August 2026 — the study engine deepens
+### 📚 August 2026: the study engine deepens
 
 The busiest month, and the one where MemoRx stopped being a daily drug card and became a study system.
 
-**Exam prep** arrives in two passes: onboarding first, then the substance — a concept taxonomy, a progressive diagnostic, learning-evidence tracking, and a generated plan for the day. Onboarding is reworked alongside an expanded therapeutic class system.
+**Exam prep** arrives in two passes: onboarding first, then the substance: a concept taxonomy, a progressive diagnostic, learning-evidence tracking, and a generated plan for the day. Onboarding is reworked alongside an expanded therapeutic class system.
 
 Entitlements move to a server-side lease with an ownership ledger, closing out the trust work July started.
 
-The month also produces a small side system: **the app learned to film its own marketing videos.** A debug launch flag replaces MemoRx with a scripted run — real views, real content, no one touching the Simulator — and writes the caption alongside the footage. That one is public, source and all:
+The month also produces a small side system: **the app learned to film its own marketing videos.** A debug launch flag replaces MemoRx with a scripted run (real views, real content, no one touching the Simulator) and writes the caption alongside the footage. That one is public, source and all:
 
-> 🎬 **[memorx-market-capture](https://github.com/ctxako/memorx-market-capture)** — the capture system, plus the artifacts from one real run.
+> 🎬 **[memorx-market-capture](https://github.com/ctxako/memorx-market-capture)**: the capture system, plus the artifacts from one real run.
 
 ---
 
@@ -206,7 +208,7 @@ An AI question generator · a scraped drug database · a flashcard app with a ph
 
 ## North Star
 
-> A student opens MemoRx for four minutes a day for eight months, and walks into the NAPLEX having genuinely retained two hundred drugs — without ever having built a study schedule themselves.
+> A student opens MemoRx for four minutes a day for eight months, and walks into the NAPLEX having genuinely retained two hundred drugs, without ever having built a study schedule themselves.
 
 ---
 
