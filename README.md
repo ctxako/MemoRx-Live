@@ -12,7 +12,9 @@
 ![Dataset](https://img.shields.io/badge/dataset-201%20drugs-C9A46A?style=for-the-badge&labelColor=0a0a0a)
 ![Status](https://img.shields.io/badge/status-shipped-6b8f71?style=for-the-badge&labelColor=0a0a0a)
 
-[![Download on the App Store](https://img.shields.io/badge/Download%20on%20the-App%20Store-0a0a0a?style=for-the-badge&logo=apple&logoColor=F5F0E6&labelColor=0a0a0a)](https://apps.apple.com/us/app/memorx-naplex-drug-prep/id6761398713)
+<a href="https://apps.apple.com/us/app/memorx-naplex-drug-prep/id6761398713">
+  <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="50" />
+</a>
 
 </div>
 
@@ -49,8 +51,44 @@ MemoRx is built around that gap. Instead of a flashcard pile you grind until it 
 <tr><td><b>21 collections</b></td><td>Therapeutic areas — pain &amp; fever, cardiovascular, endocrine, infectious disease, psych, and more.</td></tr>
 <tr><td><b>104 sub-collections</b></td><td>The level where real distinctions live: non-opioid analgesics vs. opioids, not just "pain."</td></tr>
 <tr><td><b>16 fields per drug</b></td><td>Mechanism, indications, contraindications, interactions, side effects, warnings, monitoring, dosage, counseling points, and clinical pearls.</td></tr>
-<tr><td><b>82 Swift files</b></td><td>~24,700 lines. All SwiftUI, no UIKit bridge layer.</td></tr>
 </table>
+
+---
+
+## Drug data pipeline
+
+Every drug in MemoRx starts as public clinical information and ends as a structured, validated record ready to generate quiz questions.
+
+```
+Drugs.com / MedlinePlus
+        ↓
+   extraction + normalization
+        ↓
+   16-field structured schema
+   (mechanism, indications, contraindications,
+    interactions, side effects, warnings,
+    monitoring, dosage, counseling, pearls, ...)
+        ↓
+   validation pass
+   (cross-reference sources, flag conflicts,
+    human review on every record)
+        ↓
+   Supabase Postgres
+   (drugs → collections → sub-collections)
+        ↓
+   competency system
+   (per-user mastery state per drug,
+    SM-2 scheduling, difficulty tracking)
+        ↓
+   adaptive learning / tutor
+   (question generation across fields,
+    drug-specific vs. class-level mixing,
+    spaced resurfacing based on decay)
+```
+
+The pipeline is deliberately not fully automated. Source material gets pulled from Drugs.com and MedlinePlus, normalized into the 16-field schema, then validated — cross-referencing between sources and flagging anything that conflicts before a human signs off. Automation handles the boring parts (formatting, deduplication, schema conformance); judgment calls stay manual. A wrong mechanism of action or a missing contraindication in a board prep app isn't a data quality issue, it's a liability.
+
+Once a drug record lands in Supabase, the competency system picks it up. Each user carries their own mastery state per drug — how many times they've seen it, how they rated it, when it's due again. That feeds the adaptive layer, which decides what to quiz, at what altitude (single-drug recall vs. cross-class reasoning), and when to resurface something that's about to slip.
 
 ---
 
@@ -173,6 +211,12 @@ An AI question generator · a scraped drug database · a flashcard app with a ph
 <div align="center">
 
 **Source is private.** This repository is a showcase of the work, its architecture, and its design.
+
+<a href="https://apps.apple.com/us/app/memorx-naplex-drug-prep/id6761398713">
+  <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="44" />
+</a>
+
+<br/><br/>
 
 <sub>Built by <a href="https://github.com/ctxako">@ctxako</a></sub>
 
