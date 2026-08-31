@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/icon.png" width="120" alt="MemoRx app icon" />
+
 # MemoRx
 
 **Pharmacology board prep that adapts to what you keep forgetting.**
