@@ -12,6 +12,8 @@
 ![Dataset](https://img.shields.io/badge/dataset-201%20drugs-C9A46A?style=for-the-badge&labelColor=0a0a0a)
 ![Status](https://img.shields.io/badge/status-shipped-6b8f71?style=for-the-badge&labelColor=0a0a0a)
 
+[![Download on the App Store](https://img.shields.io/badge/Download%20on%20the-App%20Store-0a0a0a?style=for-the-badge&logo=apple&logoColor=F5F0E6&labelColor=0a0a0a)](https://apps.apple.com/us/app/memorx-naplex-drug-prep/id6761398713)
+
 </div>
 
 ---
@@ -121,6 +123,38 @@ flowchart TB
 <tr><td><b>🔒 Health-adjacent privacy</b></td><td>No user identifiers in crash telemetry, anonymous sessions supported, account deletion is a first-class action rather than an email request.</td></tr>
 <tr><td><b>⚖️ Fair competition</b></td><td>Everyone gets the same drug on the same day. The leaderboard measures consistency, not who found the easiest deck.</td></tr>
 </table>
+
+---
+
+## Project log
+
+Shipping since June 2026. Source lives in a private repository; this is the shape of the work.
+
+### ☁️ June 2026 — release and backend foundation
+
+**v1.0 reaches the App Store.** The month's real work is underneath it: the Supabase layer gets its foundation laid properly, with 73 migrations and the edge function sources archived as a known-good state rather than left to drift between the dashboard and the repo.
+
+The rest is early production reality — subscription sync bugs found and fixed, and a silent fallback removed from the drug fetch path so real backend errors surface instead of quietly resolving to nothing.
+
+### 🔐 July 2026 — trust and testing
+
+A month spent almost entirely on making the backend trustworthy rather than adding features.
+
+Receipt verification moved to genuine signed-payload validation. A full audit pass swept the Supabase layer end to end — edge functions redeployed, scheduled jobs gated, weekly leaderboard archival corrected — with tests added behind it.
+
+Nothing a user would notice, which is rather the point: the parts of the app that handle money and rankings are the parts that most need to be boring and correct.
+
+### 📚 August 2026 — the study engine deepens
+
+The busiest month, and the one where MemoRx stopped being a daily drug card and became a study system.
+
+**Exam prep** arrives in two passes: onboarding first, then the substance — a concept taxonomy, a progressive diagnostic, learning-evidence tracking, and a generated plan for the day. Onboarding is reworked alongside an expanded therapeutic class system.
+
+Entitlements move to a server-side lease with an ownership ledger, closing out the trust work July started.
+
+The month also produces a small side system: **the app learned to film its own marketing videos.** A debug launch flag replaces MemoRx with a scripted run — real views, real content, no one touching the Simulator — and writes the caption alongside the footage. That one is public, source and all:
+
+> 🎬 **[memorx-market-capture](https://github.com/ctxako/memorx-market-capture)** — the capture system, plus the artifacts from one real run.
 
 ---
 
