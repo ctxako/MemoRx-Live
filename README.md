@@ -108,7 +108,7 @@ The engine tracks a drug as a decaying level of recall rather than a card you ha
 
 ---
 
-## Architecture
+## System architecture
 
 ```mermaid
 flowchart TB
