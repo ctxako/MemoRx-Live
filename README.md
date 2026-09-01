@@ -169,8 +169,6 @@ flowchart TB
 
 ## Project log
 
-Shipping since June 2026.
-
 **June 2026.** v1.0 reaches the App Store. Underneath it, the Supabase layer gets its foundation laid: 73 migrations and the edge function sources archived as a known-good state rather than left to drift between the dashboard and the repo. Subscription sync bugs fixed, and a silent fallback removed from the drug fetch path so backend errors surface instead of resolving to nothing.
 
 **July 2026.** Backend trust work rather than features. Receipt verification moved to signed-payload validation, and an audit pass across the Supabase layer: edge functions redeployed, scheduled jobs gated, weekly leaderboard archival corrected, tests added behind it.
@@ -184,12 +182,6 @@ The same month produced a side system: a debug launch flag replaces the app with
 ## Stack
 
 Swift 6 · SwiftUI · StoreKit 2 · Supabase (Postgres, Auth, Edge Functions on Deno, scheduled jobs) · Sign in with Apple · bundled JSON offline fallback
-
----
-
-## What it isn't
-
-An AI question generator · a scraped drug database · a flashcard app with a pharmacology skin · a social network · a clinical reference for practice · free forever
 
 ---
 
