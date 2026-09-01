@@ -96,7 +96,7 @@ Once a record lands in Supabase, the competency system picks it up. Each user ca
 
 ---
 
-## How the quizzing works
+## Custom quiz engine
 
 The engine tracks a drug as a decaying level of recall rather than a card you have or have not flipped.
 
@@ -105,8 +105,6 @@ The engine tracks a drug as a decaying level of recall rather than a card you ha
 **Two question levels.** Roughly 70% of questions are drug-specific ("what is the mechanism of amoxicillin?") and 30% are class-level ("which of these is not a beta-lactam?"). The first builds recall, the second builds the comparative reasoning the boards test.
 
 **No repeats.** Questions are generated across the drug's structured fields and shuffled per attempt, so a second pass is a different quiz rather than a memorized answer position.
-
-**Per-user difficulty.** Each user carries their own difficulty rating per drug, which feeds back into scheduling weight.
 
 ---
 
